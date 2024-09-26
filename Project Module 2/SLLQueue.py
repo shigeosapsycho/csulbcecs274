@@ -14,12 +14,24 @@ class SLLQueue(Queue):
         self.n = 0
 
     def add(self, x: object):
-        # todo
-        pass
+        u = self.Node(x)
+        if n = 0:
+            head = u
+        else:
+            tail.next = u
+        tail = u
+        n += 1
+        return True
 
     def remove(self) -> object:
-        # todo
-        pass
+        if self.n == 0:
+            return None
+        x = self.head.x
+        self.head = self.head.next
+        self.n -= 1
+        if self.n == 0:
+            self.tail = None
+        return x
 
     def size(self) -> int:
         return self.n
