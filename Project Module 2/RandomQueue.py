@@ -13,10 +13,16 @@ class RandomQueue(ArrayQueue):
             You can call the method of the parent class using super(). e.g.
             super().remove()
         '''
-        super().remove()
-        if self.size() > 0:
-            index = random.randint(0, self.size()-1)
-            temp = self.a[index]
-            self.a[index] = self.a[self.size()-1]
-            self.a[self.size()-1] = temp
+        if self.size() == 0:
+            raise IndexError("remove from empty queue")
+        
+        index = random.randint(0, self.size() - 1)
+        actual_index = (self.j + index) % len(self.a)
+        last_index = (self.j + self.n - 1) % len(self.a)
+        temp = self.a[actual_index]
+        self.a[actual_index] = self.a[last_index]
+        self.a[last_index] = None
+        self.n -= 1
+        if len(self.a) >= 3 * self.n:
+            self.resize()
         return temp
