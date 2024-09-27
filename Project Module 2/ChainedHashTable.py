@@ -30,20 +30,41 @@ class ChainedHashTable(Set):
         return self.n
 
     def find(self, key: object) -> object:
-        # todo
-        pass
+        index = self.hash(key)  # Hash the key to find the bucket
+        for node in self.t[index]:  # Check within the appropriate bucket
+            if node.key == key:
+                return node.value
+        return None
 
     def add(self, key: object, value: object):
-        # todo
-        pass
-
+        if self.find(key) is not None:
+            self.remove(key)
+        if self.n + 1 > len(self.t):
+            self.resize()
+        index = self.hash(key)
+        self.t[index].append(self.Node(key, value))  # Add the key-value pair in the appropriate bucket
+        self.n += 1
+        
     def remove(self, key: int) -> object:
-        # todo
-        pass
+        index = self.hash(key)
+        for i, node in enumerate(self.t[index]):
+            if node.key == key:
+                value = node.value
+                del self.t[index][i]
+                self.n -= 1
+                if 3 * self.n < len(self.t):
+                    self.resize()
+                return value
+        return None
 
     def resize(self):
-        # todo
-        pass
+        new_size = max(2, 2 * self.n)
+        old_t = self.t
+        self.t = self.alloc_table(new_size)
+        self.n = 0
+        for chain in old_t:
+            for node in chain:
+                self.add(node.key, node.value)
 
     def __str__(self):
         s = "["

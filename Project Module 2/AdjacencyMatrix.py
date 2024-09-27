@@ -8,33 +8,61 @@ class AdjacencyMatrix(Graph):
         self.n = n
         self.adj = np.zeros(n*n)
 
-    def add_edge(self, i : int, j : int):
-        # todo
-        pass
+    def add_edge(self, i: int, j: int):
+        self.adj[i * self.n + j] = 1
 
-    def remove_edge(self, i : int, j : int):
-        # todo
-        pass
+    def remove_edge(self, i: int, j: int):
+        self.adj[i * self.n + j] = 0
 
-    def has_edge(self, i : int, j: int) ->bool:
-        # todo
-        pass
-
+    def has_edge(self, i: int, j: int) -> bool:
+        return self.adj[i * self.n + j] == 1
+    
     def out_edges(self, i) -> List:
-        # todo
-        pass
+        edges = []
+        for j in range(self.n):
+            if self.adj[i][j] == 1:  # If there's an edge from i to j, add j to the list
+                edges.append(j)
+        return edges
 
     def in_edges(self, i) -> List:
         # todo
-        pass
+        edges = []
+        for j in range(self.n):
+            if self.adj[j][i] == 1:  # If there's an edge from j to i, add j to the list
+                edges.append(j)
+        return edges
 
     def bfs(self, r : int):
         # todo
-        pass
+        visited = [False] * self.n
+        queue = []
+        queue.append(r)
+        visited[r] = True
+        
+        while queue:
+            u = queue.pop(0)
+            print(u, end=" ")
+            
+            for v in range(self.n):
+                if self.adj[u][v] == 1 and not visited[v]:  # If there's an edge and v hasn't been visited
+                    queue.append(v)
+                    visited[v] = True
 
     def dfs(self, r : int):
         # todo
-        pass
+        visited = [False] * self.n
+        stack = []
+        stack.append(r)
+
+        while stack:
+            u = stack.pop()
+            if not visited[u]:
+                print(u, end=" ")
+                visited[u] = True
+
+                for v in range(self.n - 1, -1, -1):  # Traverse in reverse order for correct DFS
+                    if self.adj[u][v] == 1 and not visited[v]:
+                        stack.append(v)
 
     def __str__(self):
         s = ""

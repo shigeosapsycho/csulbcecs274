@@ -17,43 +17,76 @@ class BinarySearchTree(BinaryTree, Set):
         u = BinaryTree.Node(x)
         u.left = u.right = u.parent = self.nil
         return u
-    
         
-    def find_last(self, x : object) -> BinaryTree.Node:
-        # todo
-        pass 
-        
-    def add_child(self, p : BinaryTree.Node, u : BinaryTree.Node) -> bool:
-        # todo
-        pass  
+    def find_last(self, x: object) -> BinaryTree.Node:
+        w = self.r
+        prev = self.nil
+        while w != self.nil:
+            prev = w
+            if x < w.x:
+                w = w.left
+            elif x > w.x:
+                w = w.right
+            else:
+                return w
+        return prev
 
-    def find_eq(self, x : object) -> object:
-        # todo
-        pass 
-    
+    def add_child(self, p: BinaryTree.Node, u: BinaryTree.Node) -> bool:
+        if p == self.nil:
+            self.r = u
+        elif u.x < p.x:
+            p.left = u
+        else:
+            p.right = u
+        u.parent = p
+        self.n += 1
+        return True
+
+    def find_eq(self, x: object) -> object:
+        u = self.r
+        while u != self.nil:
+            if x < u.x:
+                u = u.left
+            elif x > u.x:
+                u = u.right
+            else:
+                return u.v
+        return None
+
     def find(self, x: object) -> object:
-        # todo
-        pass 
-        
-    def add(self, key : object, value : object) -> bool:
-        p = self.find_last(key)
-        return self.add_child(p, BinaryTree.Node(key, value))
-        
-    def add_node(self, u : BinaryTree.Node) -> bool:
-        p = self.find_last(u.x)
-        return self.add_child(p, u)
-    
+        u = self.find_last(x)
+        if u != self.nil and u.x == x:
+            return u.v
+        return None
+
     def splice(self, u: BinaryTree.Node):
-        # todo
-        pass 
+        if u.left != self.nil:
+            s = u.left
+        else:
+            s = u.right
+        if u == self.r:
+            self.r = s
+            s.parent = self.nil
+        else:
+            if u == u.parent.left:
+                u.parent.left = s
+            else:
+                u.parent.right = s
+            s.parent = u.parent
 
-    def remove_node(self, u : BinaryTree.Node):
-        # todo
-        pass 
-
-    def remove(self, x : object) -> bool:
-        # todo
-        pass 
+    def remove(self, x: object) -> bool:
+        u = self.find_last(x)
+        if u == self.nil or u.x != x:
+            return False
+        if u.left == self.nil or u.right == self.nil:
+            self.splice(u)
+        else:
+            w = self.next_node(u)
+            u.x = w.x
+            u.v = w.v
+            self.splice(w)
+        self.n -= 1
+        return True
              
     def __iter__(self):
         u = self.first_node()

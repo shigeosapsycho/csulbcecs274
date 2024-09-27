@@ -24,39 +24,39 @@ class BinaryTree:
         self.r = None
         self.nil = None
 
-    def depth(self, u : Node) -> int:
-        # todo
-        pass 
+    def depth(self, u: Node) -> int:
+        depth = 0
+        while u != self.r:
+            u = u.parent
+            depth += 1
+        return depth
 
-    def size(self) -> int:
-        return self._size(self.r)
-    
-    def _size(self, u : Node) -> int:
-        # todo
-        pass 
-    
-    def size2(self) -> int:
-        # todo
-        pass 
+    def _size(self, u: Node) -> int:
+        if u == self.nil:
+            return 0
+        return 1 + self._size(u.left) + self._size(u.right)
 
-    def height(self) -> int:
-        return self._height(self.r)
-    
-    def _height(self, u : Node) -> int:
-        # todo
-        pass 
-    
-    def traverse(self, u : Node):
-        # todo
-        pass 
+    def _height(self, u: Node) -> int:
+        if u == self.nil:
+            return -1
+        return 1 + max(self._height(u.left), self._height(u.right))
 
-    def traverse2(self):
-        # todo
-        pass 
+    def traverse(self, u: Node):
+        if u == self.nil:
+            return
+        self.traverse(u.left)
+        print(u.x, end=" ")
+        self.traverse(u.right)
 
     def bf_traverse(self):
-        # todo
-        pass 
+        q = ArrayQueue.ArrayQueue()
+        q.add(self.r)
+        while q.size() > 0:
+            u = q.remove()
+            if u != self.nil:
+                print(u.x, end=" ")
+                q.add(u.left)
+                q.add(u.right)
             
     def first_node(self):
         w = self.r

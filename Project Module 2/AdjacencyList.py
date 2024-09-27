@@ -15,15 +15,14 @@ class AdjacencyList(Graph):
             
     def add_edge(self, i : int, j : int):
         # todo
-        pass
+        self.adj[i].append(j)
 
-    def remove_edge(self, i : int, j : int):
-        # todo
-        pass
+    def remove_edge(self, i: int, j: int):
+        if j in self.adj[i]:
+            self.adj[i].remove(j)
                 
     def has_edge(self, i : int, j: int) ->bool:
-        # todo
-        pass
+        return j in self.adj[i]
         
     def out_edges(self, i) -> List:
         # todo
@@ -31,15 +30,41 @@ class AdjacencyList(Graph):
 
     def in_edges(self, i) -> List:
         # todo
-        pass
+        edges = []
+        for j in range(self.n):  # Traverse all nodes
+            if i in self.adj[j]:  # If node i is in the adjacency list of node j, it's an incoming edge
+                edges.append(j)
+        return edges
     
     def bfs(self, r : int, dest: int):
-        # todo
-        pass    
+        visited = [False] * self.n
+        queue = []
+        queue.append(r)
+        visited[r] = True
+        
+        while queue:
+            u = queue.pop(0)
+            print(u, end=" ")
+            
+            for v in self.adj[u]:
+                if not visited[v]:
+                    queue.append(v)
+                    visited[v] = True
 
     def dfs(self, r : int, dest: int):
-        # todo
-        pass    
+        visited = [False] * self.n
+        stack = []
+        stack.append(r)
+
+        while stack:
+            u = stack.pop()
+            if not visited[u]:
+                print(u, end=" ")
+                visited[u] = True
+
+                for v in reversed(self.adj[u]):
+                    if not visited[v]:
+                        stack.append(v)
                     
     def __str__(self):
         s = ""

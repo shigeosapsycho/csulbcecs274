@@ -40,6 +40,7 @@ class BookStore:
             elapsed_time = time.time() - start_time
             print(f"Loading {self.bookCatalog.size()} books in {elapsed_time} seconds")
 
+
     def setRandomShoppingCart(self):
         q = self.shoppingCart
         start_time = time.time()
@@ -86,16 +87,24 @@ class BookStore:
             elapsed_time = time.time() - start_time
             print(f"Added to shopping cart {s} \n{elapsed_time} seconds")
 
-    def searchBookByInfix(self, infix: str):
-        '''
-        searchBookByInfix: Search all the books that contains infix
-        input: 
-            infix: A string    
-        '''
+    def searchBookByInfix(self, infix: str, count: int = 15):
         start_time = time.time()
-        # todo
+        found_count = 0
+
+        for i in range(self.bookCatalog.size()):
+            book = self.bookCatalog.get(i)
+            if infix in book.title:
+                print(book)
+                found_count += 1
+                if found_count >= count:
+                    break
+
+        print(f"Found {found_count} books containing '{infix}'")
+
         elapsed_time = time.time() - start_time
         print(f"searchBookByInfix Completed in {elapsed_time} seconds")
+
+        return found_count
 
     def removeFromShoppingCart(self):
         '''
