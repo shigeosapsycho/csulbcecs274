@@ -23,12 +23,12 @@ class SLLStack(Stack):
         return self.x
 
     def pop(self) -> object:
-        if n == 0:
+        if self.n == 0:
             return None
         x = self.head.x
         head = self.head.next
         self.n -= 1
-        if self.n = 0:
+        if self.n == 0:
             self.tail = None
         return self.x
 
