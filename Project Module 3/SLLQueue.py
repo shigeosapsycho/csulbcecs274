@@ -13,7 +13,7 @@ class SLLQueue(Queue):
         self.tail = None
         self.n = 0
 
-    def add(self, x: object):
+    def add(self, x: object): # O(1) operation
         u = self.Node(x)
         if n == 0:
             self.head = u
@@ -23,7 +23,7 @@ class SLLQueue(Queue):
         n += 1
         return True
 
-    def remove(self) -> object:
+    def remove(self) -> object: # O(1) operation
         if self.n == 0:
             return None
         x = self.head.x

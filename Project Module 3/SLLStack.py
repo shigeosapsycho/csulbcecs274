@@ -13,7 +13,7 @@ class SLLStack(Stack):
         self.tail = None
         self.n = 0
 
-    def push(self, x: object):
+    def push(self, x: object): # O(1) Operations
         u = self.Node(x)
         u.next = self.head
         self.head = u
@@ -22,7 +22,7 @@ class SLLStack(Stack):
         self.n += 1
         return self.x
 
-    def pop(self) -> object:
+    def pop(self) -> object: # O(1) Operations
         if self.n == 0:
             return None
         x = self.head.x
