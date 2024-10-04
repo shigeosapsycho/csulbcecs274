@@ -15,12 +15,12 @@ class SLLQueue(Queue):
 
     def add(self, x: object): # O(1) operation
         u = self.Node(x)
-        if n == 0:
+        if self.n == 0:
             self.head = u
         else:
             self.tail.next = u
         self.tail = u
-        n += 1
+        self.n += 1
         return True
 
     def remove(self) -> object: # O(1) operation

@@ -49,9 +49,9 @@ class DLList(List):
     def append(self, x: object):
         self.add(self.n, x)
 
-    def isPalindrome(self) -> bool:
-        # todo
-        pass
+    def isPalindrome(self) -> bool: # Method not might work properly
+        x_str = str(self)
+        return x_str == x_str[::-1]
 
     def __str__(self):
         s = "["

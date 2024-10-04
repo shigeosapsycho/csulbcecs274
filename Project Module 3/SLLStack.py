@@ -20,17 +20,17 @@ class SLLStack(Stack):
         if self.n == 0:
             self.tail = u
         self.n += 1
-        return self.x
+        return x
 
     def pop(self) -> object: # O(1) Operations
         if self.n == 0:
-            return None
+            raise Exception()
         x = self.head.x
-        head = self.head.next
+        self.head = self.head.next
         self.n -= 1
         if self.n == 0:
             self.tail = None
-        return self.x
+        return x
 
     def size(self) -> int:
         return self.n
