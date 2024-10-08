@@ -25,7 +25,7 @@ class SLLQueue(Queue):
 
     def remove(self) -> object: # O(1) operation
         if self.n == 0:
-            return None
+            raise IndexError()
         x = self.head.x
         self.head = self.head.next
         self.n -= 1

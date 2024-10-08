@@ -24,7 +24,7 @@ class SLLStack(Stack):
 
     def pop(self) -> object: # O(1) Operations
         if self.n == 0:
-            raise Exception()
+            raise IndexError()
         x = self.head.x
         self.head = self.head.next
         self.n -= 1
