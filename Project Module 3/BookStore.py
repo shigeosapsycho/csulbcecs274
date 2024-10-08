@@ -6,7 +6,6 @@ import DLList
 import SLLQueue
 import MaxQueue
 import time
-# Commented out unnecessary imports
 # import ChainedHashTable
 # import BinarySearchTree
 # import BinaryHeap
@@ -140,13 +139,12 @@ class BookStore:
             print(f"removeFromShoppingCart {u} Completed in {elapsed_time} seconds")
 
     def getCartBestSeller(self):
-        start_time = time.time()
-        if self.shoppingCart.size() == 0:
-            print("The shopping cart is empty.")
-            return
-        best_seller = self.shoppingCart.max()
-        elapsed_time = time.time() - start_time
-        print(f"getCartBestSeller returned \n{best_seller} \nCompleted in {elapsed_time} seconds")
+        if not self.shopping_cart:
+            return None
+        # Assuming each book has a 'sales' attribute
+        best_seller = max(self.shopping_cart, key=lambda book: book.sales)
+        return best_seller
+
         # start_time = time.time()
         # if self.shoppingCart.size() > 0:
         #     best_seller = self.shoppingCart.max().title

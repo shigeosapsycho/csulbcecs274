@@ -1,6 +1,5 @@
 from Interfaces import List
 import numpy as np
-import re
 
 class DLList(List):
     class Node:
@@ -88,10 +87,14 @@ class DLList(List):
         self.add(self.n, x)
 
     def isPalindrome(self) -> bool:
-        s = "".join([str(self.get(i)) for i in range(self.n)])
-        
-        cleaned_string = re.sub(r'[^A-Za-z0-9]', '', s).lower()
-        
+        cleaned_string = []
+        current = self.dummy.next
+
+        while current != self.dummy:
+            if str(current.x).isalnum():
+                cleaned_string.append(str(current.x).lower())
+            current = current.next
+
         return cleaned_string == cleaned_string[::-1]
     # Time Complexity: O(n)
 

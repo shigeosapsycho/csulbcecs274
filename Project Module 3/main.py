@@ -2,7 +2,6 @@ import Calculator
 import BookStore
 import DLList
 
-
 def menu_calculator():
     calculator = Calculator.Calculator()
     option = ""
@@ -17,25 +16,7 @@ def menu_calculator():
             if calculator.matched_expression(expression):
                 print(f"{expression} is a valid expression")
             else:
-                print(f"{expression} is invalid expression")
-
-        ''' 
-        Add the menu options when needed
-        '''
-def menu_palindrome_test():
-    option = ""
-    while option != '0':
-        print("""
-        1 Check if a string is a palindrome
-        0 Return to main menu
-        """)
-        option = input()
-        if option == "1":
-            string = input("Introduce the string to check: ")
-            if string == string[::-1]:
-                print(f"{string} is a palindrome")
-            else:
-                print(f"{string} is not a palindrome")
+                print(f"{expression} is an invalid expression")
 
 def menu_bookstore_system():
     bookStore = BookStore.BookStore()
@@ -49,6 +30,7 @@ def menu_bookstore_system():
         3 Add a book by index to shopping cart
         4 Remove from the shopping cart
         5 Search book by infix
+        6 Get cart best-seller
         0 Return to main menu
         """)
         option = input()
@@ -59,9 +41,8 @@ def menu_bookstore_system():
         elif option == "1":
             file_name = input("Introduce the name of the file: ")
             bookStore.loadCatalog(file_name)
-            # bookStore.pathLength(0, 159811)
         elif option == "2":
-            i = int(("Introduce the index to remove from catalog: "))
+            i = int(input("Introduce the index to remove from catalog: "))
             bookStore.removeFromCatalog(i)
         elif option == "3":
             i = int(input("Introduce the index to add to shopping cart: "))
@@ -71,10 +52,24 @@ def menu_bookstore_system():
         elif option == "5":
             infix = input("Introduce the query to search: ")
             bookStore.searchBookByInfix(infix)
+        elif option == "6":
+            best_seller = bookStore.getCartBestSeller()
+            if best_seller:
+                print(f"Best-seller in cart: {best_seller}")
+            else:
+                print("No books are added to the shopping cart.")
 
         ''' 
         Add the menu options when needed
         '''
+def is_palindrome_test(expression):
+    dll = DLList.DLList()
+    for char in expression:
+        dll.append(char)
+    if dll.isPalindrome():
+        print("Palindrome")
+    else:
+        print("Not a palindrome")
 
 
 # main: Create the main menu
@@ -94,8 +89,15 @@ def main():
         elif option == "2":
             menu_bookstore_system()
         elif option == "3":
-            menu_palindrome_test()
-
+            expression = input("Enter a word/phrase to check if it's a palindrome: ")
+            result = is_palindrome_test(expression)
+            print(result)
+        elif option == "6":
+            best_seller = bookStore.getCartBestSeller()
+            if best_seller:
+                print(f"Best-seller in cart: {best_seller}")
+            else:
+                print("No Books are added to the Shopping Cart...")
 
 if __name__ == "__main__":
     main()
