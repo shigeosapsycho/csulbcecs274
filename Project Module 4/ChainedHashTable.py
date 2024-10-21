@@ -2,7 +2,6 @@ from Interfaces import Set
 from DLList import DLList
 import numpy as np
 
-
 class ChainedHashTable(Set):
     class Node:
         def __init__(self, key, value):
