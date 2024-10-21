@@ -1,5 +1,8 @@
+from timeit import dummy_src_name
+
 from Interfaces import List
 import numpy as np
+
 
 class DLList(List):
     class Node:
@@ -9,76 +12,71 @@ class DLList(List):
             self.x = x
 
     def __init__(self):
-        self.dummy = DLList.Node("")
+        self.dummy = DLList.Node("") # where is dummy at - the start and end of the list
         self.dummy.next = self.dummy
         self.dummy.prev = self.dummy
         self.n = 0
 
+    def contains(self, x: object) -> bool:
+        curr = self.dummy.next
+        while curr is not self.dummy:
+            if curr.x == x:
+                return True
+            curr = curr.next
+        return False
+
+    # helper method
     def get_node(self, i: int) -> Node:
-        # todo
-        if i < 0 or i > self.n: # precondition
-            return None
-        if i < self.n // 2:
-            u = self.dummy.next # head, i = 0
-            for j in range(i):
-                u = u.next
+
+        if i == self.n:
+            return self.dummy # ability to add to the end of the list
+        if not 0 <= i < self.n:
+            raise IndexError
+
+        curr = self.dummy
+        if i < self.n/2:
+            for _ in range(i + 1):
+                curr = curr.next
         else:
-            u = self.dummy
-            for j in range(self.n, i, -1):
-                u = u.prev
-        return u # i-th node
-    # Time Complexity: O(1) + min{i, n-i}
+            for _ in range(self.n - i):
+                curr = curr.prev
+        return curr
 
     def get(self, i) -> object:
-        # todo
-        if i < 0 or i >= self.n:
-            raise Exception()
-        return self.get_node(i).x # Return the i-th node
-    # Time Complexity: O(1 + min{i, n-i})
-        
-    def set(self, i: int, x: object) -> object:
-        # todo
-        if i < 0 or i >= self.n:
-            raise Exception()
-        u = self.get_node(i) # i-th node
-        y = u.x # Data from the i-th node
-        u.x = x # Updating/Overwriting Data
-        return y
-    # Time Complexity: O(1 + min{i, n-i})
+        return self.get_node(i).x
 
+    def set(self, i: int, x: object) -> object:
+        self.get_node(i).x = x
+        return x
+
+    # helper method, x is the val to add (index is unknown?)
     def add_before(self, w: Node, x: object) -> Node:
-        # todo
-        if w is None:
-            raise Exception()
-        u = DLList.Node(x)
-        u.prev = w.prev
-        u.next = w
-        w.prev = u
-        u.prev.next = u
+        new_node = self.Node(x)
+
+        # w.prev -> w to
+        # w.prev -> new_node -> w
+        new_node.prev, new_node.next = w.prev, w
+        w.prev.next, w.prev = new_node, new_node
         self.n += 1
-        # Time Complexity: O(1)
+        return new_node
 
     def add(self, i: int, x: object):
-        # todo
-        if i < 0 or i > self.n: # Precondition
-            raise Exception()
-        return self.add_before(self.get_node(i), x) # O(1 + min{i, n-i})
-    # Time complexity: O(1 + min{i, n-i})
-
-    def _remove(self, i: int):
-        # todo
-        if i < 0 or i >= self.n:
-            raise IndexError()
-        w = self.get_node(i)
-        w.prev.next = w.next
-        w.next.prev = w.prev
-        self.n -= 1
-        return w.x
-    # Time Complexity: O(1 + min{i, n-i})
-
-    def remove(self, i: int):
         if i < 0 or i > self.n:  raise IndexError()
-        return self._remove(i)
+        self.add_before(self.get_node(i), x)
+
+    # helper method, w is the node to be removed (index is unknown?)
+    def _remove(self, w: Node) -> object:
+        x = w.x
+        # before -> w -> after
+        # before -> after
+        w.next.prev = w.prev
+        w.prev.next = w.next
+        self.n -= 1
+        return x
+
+    def remove(self, i: int) -> object:
+        if i < 0 or i >= self.n:  raise IndexError()
+        return self._remove(self.get_node(i))
 
     def size(self) -> int:
         return self.n
@@ -86,17 +84,35 @@ class DLList(List):
     def append(self, x: object):
         self.add(self.n, x)
 
+    # case and punctuation do not matter
     def isPalindrome(self) -> bool:
-        cleaned_string = []
-        current = self.dummy.next
+        while self.size() > 1: # size() 0 and 1 are always palindromes
+            front = self.remove(0)
+            back = self.remove(self.size() -1)
+            if front != back: return False
+        return True
 
-        while current != self.dummy:
-            if str(current.x).isalnum():
-                cleaned_string.append(str(current.x).lower())
-            current = current.next
+    def reverse(self) -> None:
+        # reverses from self.dummy to self.dummy
+        curr = self.dummy
+        for i in range(self.n + 1):
+            old_next = curr.next
+            curr.next = curr.prev
+            curr.prev = old_next
+            curr = curr.next
 
-        return cleaned_string == cleaned_string[::-1]
-    # Time Complexity: O(n)
+    # clear() - clears the whole dll and returns the list equivalent
+    """
+    def clear(self) -> list:
+        if self.n == 0:
+            raise IndexError("List is empty.")
+        data = list()
+        for i in range(self.n):
+            data.append(self.get_node(i).x)
+        self.dummy.next = self.dummy
+        self.dummy.prev = self.dummy
+        return data
+    """
 
     def __str__(self):
         s = "["
@@ -104,7 +120,8 @@ class DLList(List):
         while u is not self.dummy:
             s += "%r" % u.x
             u = u.next
-            if u is not None:
+            # note: added "and u is not self.dummy"
+            if u is not None and u is not self.dummy:
                 s += ","
         return s + "]"
 
@@ -119,9 +136,3 @@ class DLList(List):
         else:
             raise StopIteration()
         return x
-
-    def reverse(self):
-        current = self.dummy
-        for i in range(self.n + 1):
-            current.next, current.prev = current.prev, current.next
-            current = current.prev

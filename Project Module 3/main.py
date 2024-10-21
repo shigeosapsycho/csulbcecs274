@@ -1,6 +1,12 @@
+from multiprocessing.managers import Array
+from os import times
+
 import Calculator
 import BookStore
-import DLList
+from DLList import DLList
+# from RedBlackTree import black
+# from ArrayStack import ArrayStack
+
 
 def menu_calculator():
     calculator = Calculator.Calculator()
@@ -16,7 +22,12 @@ def menu_calculator():
             if calculator.matched_expression(expression):
                 print(f"{expression} is a valid expression")
             else:
-                print(f"{expression} is an invalid expression")
+                print(f"{expression} is invalid expression")
+
+        ''' 
+        Add the menu options when needed
+        '''
+
 
 def menu_bookstore_system():
     bookStore = BookStore.BookStore()
@@ -41,8 +52,9 @@ def menu_bookstore_system():
         elif option == "1":
             file_name = input("Introduce the name of the file: ")
             bookStore.loadCatalog(file_name)
+            # bookStore.pathLength(0, 159811)
         elif option == "2":
-            i = int(input("Introduce the index to remove from catalog: "))
+            i = int("Introduce the index to remove from catalog: ")
             bookStore.removeFromCatalog(i)
         elif option == "3":
             i = int(input("Introduce the index to add to shopping cart: "))
@@ -53,27 +65,29 @@ def menu_bookstore_system():
             infix = input("Introduce the query to search: ")
             bookStore.searchBookByInfix(infix)
         elif option == "6":
-            best_seller = bookStore.getCartBestSeller()
-            if best_seller:
-                print(f"Best-seller in cart: {best_seller}")
-            else:
-                print("No books are added to the shopping cart.")
+            bookStore.getCartBestSeller()
 
         ''' 
         Add the menu options when needed
         '''
-def is_palindrome_test(expression):
-    dll = DLList.DLList()
-    for char in expression:
-        dll.append(char)
-    if dll.isPalindrome():
-        print("Palindrome")
+
+
+def menu_test_palindrome():
+    dl_list = DLList()
+    s = input("Enter a word/phrase: ")
+    for c in s.lower():
+        if c.isalpha():
+            dl_list.append(c.lower())
+    if dl_list.isPalindrome():
+        print("Result: Palindrome")
     else:
-        print("Not a palindrome")
+        print("Result: Not a Palindrome")
 
 
 # main: Create the main menu
 def main():
+
+    # LAB main
     option = ""
     while option != '0':
         print("""
@@ -89,15 +103,7 @@ def main():
         elif option == "2":
             menu_bookstore_system()
         elif option == "3":
-            expression = input("Enter a word/phrase to check if it's a palindrome: ")
-            result = is_palindrome_test(expression)
-            print(result)
-        elif option == "6":
-            best_seller = bookStore.getCartBestSeller()
-            if best_seller:
-                print(f"Best-seller in cart: {best_seller}")
-            else:
-                print("No Books are added to the Shopping Cart...")
+            menu_test_palindrome()
 
 if __name__ == "__main__":
     main()

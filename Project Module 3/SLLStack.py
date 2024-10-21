@@ -1,3 +1,5 @@
+from wsgiref.validate import header_re
+
 from Interfaces import Stack
 import numpy as np
 
@@ -13,24 +15,38 @@ class SLLStack(Stack):
         self.tail = None
         self.n = 0
 
-    def push(self, x: object): # O(1) Operations
-        u = self.Node(x)
-        u.next = self.head
-        self.head = u
+    def push(self, x: object) -> None:
+        # add at the head
+        new_node = self.Node(x)
         if self.n == 0:
-            self.tail = u
+            self.head = self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head = new_node
+        """
+        new_node = self.Node(x)
+        old_head = self.head
+        self.head = new_node
+        self.head.next = self.head
+        if self.n == 0:
+            self.tail = new_node
+        """
         self.n += 1
+
+    def pop(self) -> object:
+        # remove from the head
+        if self.n == 0:
+            raise IndexError
+
+        x = self.head.x
+        if self.n == 1:
+            self.head = self.tail = None
+        else:
+            self.head = self.head.next
+
+        self.n -= 1
         return x
 
-    def pop(self) -> object: # O(1) Operations
-        if self.n == 0:
-            raise IndexError()
-        x = self.head.x
-        self.head = self.head.next
-        self.n -= 1
-        if self.n == 0:
-            self.tail = None
-        return x
 
     def size(self) -> int:
         return self.n

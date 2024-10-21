@@ -13,24 +13,28 @@ class SLLQueue(Queue):
         self.tail = None
         self.n = 0
 
-    def add(self, x: object): # O(1) operation
-        u = self.Node(x)
+    def add(self, x: object):
+        # add at the tail
+        new_node = self.Node(x)
         if self.n == 0:
-            self.head = u
+            self.head = self.tail = new_node
         else:
-            self.tail.next = u
-        self.tail = u
+            self.tail.next = new_node
+            self.tail = self.tail.next
         self.n += 1
-        return True
 
-    def remove(self) -> object: # O(1) operation
+    def remove(self) -> object:
+        # remove from the head (same as stack)
         if self.n == 0:
-            raise IndexError()
+            raise IndexError
+
         x = self.head.x
-        self.head = self.head.next
+        if self.n == 1:
+            self.head = self.tail = None
+        else:
+            self.head = self.head.next
+
         self.n -= 1
-        if self.n == 0:
-            self.tail = None
         return x
 
     def size(self) -> int:
