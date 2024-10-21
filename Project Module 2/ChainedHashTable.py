@@ -13,7 +13,7 @@ class ChainedHashTable(Set):
         self.dtype = dtype
         self.d = 1
         self.t = self.alloc_table(2 ** self.d)
-        self.z = 193759204821
+        self.z = random_odd_int()
         self.w = 31
         self.n = 0
 
